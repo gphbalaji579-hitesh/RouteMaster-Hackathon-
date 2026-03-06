@@ -3,36 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RouteMaster Pathfinding App</title>
+    <title>Route Master</title>
     <style>
         body {
+            background-color: #121212;
+            color: #ffffff;
             font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
-        #canvas {
-            border: 1px solid #000;
-            margin-bottom: 20px;
+        #grid {
+            border: 1px solid #ffffff;
+            display: grid;
+            grid-template-columns: repeat(50, 1fr);
+            grid-template-rows: repeat(50, 1fr);
         }
-        #controls {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
+        #grid div {
+            border: 1px solid #555;
+        }
+        #sidebar {
+            width: 200px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            background-color: #1e1e1e;
+            padding: 10px;
+        }
+        button {
+            background-color: #6200ea;
+            color: #ffffff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #555;
+            background-color: #222;
+            color: #ffffff;
         }
     </style>
 </head>
 <body>
-    <h1>RouteMaster Pathfinding App</h1>
-    <canvas id="canvas" width="600" height="600"></canvas>
-    <div id="controls">
-        <input type="text" id="start" placeholder="Start Node (e.g., 0,0)">
-        <input type="text" id="end" placeholder="End Node (e.g., 9,9)">
-        <button id="findPath">Find Path</button>
-        <button id="clear">Clear</button>
+    <div id="sidebar">
+        <h2>Target Collection Order</h2>
+        <form id="json-input-form">
+            <label for="json-input">JSON Input:</label>
+            <textarea id="json-input" rows="4"></textarea>
+            <button type="button" onclick="submitJson()">Submit</button>
+        </form>
+        <div>
+            <h2>Step Counter</h2>
+            <div id="step-counter">0</div>
+            <button onclick="findPath()">Find Path</button>
+            <button onclick="replay()">Replay</button>
+        </div>
     </div>
+    <div id="grid"></div>
+
     <script>
-        // JavaScript for handling canvas and pathfinding logic goes here.
+        function createGrid() {
+            const grid = document.getElementById('grid');
+            for (let i = 0; i < 2500; i++) { // 50x50 = 2500
+                const cell = document.createElement('div');
+                grid.appendChild(cell);
+            }
+        }
+
+        function submitJson() {
+            const input = document.getElementById('json-input').value;
+            console.log('Submitted JSON:', input);
+            // handle your JSON input here
+        }
+
+        function findPath() {
+            console.log('Finding path...');
+            // Implement pathfinding logic
+        }
+
+        function replay() {
+            console.log('Replaying...');
+            // Implement replay logic
+        }
+
+        window.onload = createGrid;
     </script>
 </body>
 </html>

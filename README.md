@@ -1,34 +1,52 @@
-# RouteMaster Project
+# RouteMaster Hackathon Project Documentation
 
-## Description
-RouteMaster is an innovative solution designed to streamline route planning and optimization for various applications, enabling users to efficiently compute routes based on multi-target criteria in real-time.
+## Specification Overview
+This project aims to provide an efficient solution for navigating a grid and collecting targets using the BFS algorithm.
 
-## Features
-- Multi-target route planning
-- Real-time updates and adjustments
-- User-friendly interface
-- Integration with existing mapping services
-
-## Usage Instructions
-1. Clone the repository: `git clone https://github.com/gphbalaji579-hitesh/RouteMaster-Hackathon-`
-2. Navigate to the project directory: `cd RouteMaster-Hackathon-`
-3. Install required dependencies: `npm install`
-4. Start the application: `npm start`
-
-## Sample JSON Input
+### Sample JSON Input
 ```json
 {
-  "targets": [
-    { "latitude": 37.7749, "longitude": -122.4194 },
-    { "latitude": 34.0522, "longitude": -118.2437 }
-  ],
-  "start": { "latitude": 36.1699, "longitude": -115.1398 }
+  "grid": [[0, 0, 1],
+            [0, 2, 1],
+            [0, 0, 0]],
+  "start": [0,0],
+  "targets": [[1,1],[2,2]]
 }
 ```
 
-## BFS Multi-Target Logic Explanation
-The BFS (Breadth-First Search) algorithm is employed to efficiently locate the shortest path in a graph or a spatial area. In a multi-target scenario:
-1. The algorithm initiates at a start point and explores neighboring nodes. 
-2. Each target is treated as a node in the search space.
-3. The algorithm ensures that the paths to all targets are evaluated simultaneously, allowing for the computation of the optimal route that visits multiple points in the least amount of time.
-4. By using BFS, the system can quickly adapt to real-time changes, such as traffic conditions or route diversions, providing an updated route plan dynamically.
+### Expected Output Format
+```json
+{
+  "totalsteps": 25,
+  "path": [[0,0],[0,1],...],
+  "targetscollected": 2
+}
+```
+
+## Winning Features
+1. **Feature 1**: Description of feature one and its benefits.
+2. **Feature 2**: Description of feature two and its advantages.
+3. **Feature 3**: Description of feature three and how it enhances the project.
+4. **Feature 4**: Description of feature four with real-world applications.
+5. **Feature 5**: Description of feature five and its impact on user experience.
+
+## BFS Algorithm Explanation
+The BFS (Breadth-First Search) algorithm is utilized to navigate through the grid efficiently. It explores all the neighbor nodes at the present depth before moving on to nodes at the next depth level. Here are the details regarding the bonus points and optimizations...
+
+### Bonus Points Details
+- Collecting targets enhances the performance metric thus providing bonus points.
+
+## Usage Instructions
+To use this project, follow these steps:
+1. Clone the repository.
+2. Install the required dependencies.
+3. Run the project using the command `npm start`.
+
+## Mobile-Friendly Dark UI
+The application features a mobile-friendly dark UI that improves visibility and reduces eye strain, particularly in low-light environments. This aspect was designed keeping modern usability standards in mind, making the app accessible to a wider audience.
+
+## Last Updated
+**Date:** 2026-03-06 05:46:04 UTC  
+**Author:** gphbalaji579-hitesh
+
+---

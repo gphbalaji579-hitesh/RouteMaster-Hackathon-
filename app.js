@@ -1,72 +1,93 @@
-// BFS Algorithm Implementation for Multi-Target Pathfinding
+// BFS Pathfinding Algorithm Implementation in JavaScript
 
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-
-let grid = [];
-let start = { x: 0, y: 0 };
-let targets = [{ x: 10, y: 10 }, { x: 15, y: 15 }];
-let steps = 0;
-
-// Initialize the grid
-function initGrid(rows, cols) {
-    for (let i = 0; i < rows; i++) {
-        grid[i] = [];
-        for (let j = 0; j < cols; j++) {
-            grid[i][j] = 0; // 0 represents an empty cell
-        }
+// BFS class to encapsulate functionality
+class BFS {
+    constructor(grid, targets) {
+        this.grid = grid;           // 2D array representing the canvas grid
+        this.targets = targets;     // List of target positions
+        this.visited = [];          // Visited nodes
+        this.path = [];             // Path taken
+        this.stepCounter = 0;       // Step count for animation
     }
-}
 
-// BFS Algorithm
-function bfs(start, targets) {
-    let queue = [start];
-    let visited = new Set();
-    visited.add(start.x + ',' + start.y);
+    // Perform BFS to find paths to all targets
+    findPaths() {
+        let queue = [];
+        const start = this.getStartPosition();
+        queue.push(start);
+        this.visited.push(start);
 
-    while (queue.length) {
-        steps++;
-        let current = queue.shift();
-        ctx.fillStyle = 'black';
-        ctx.fillRect(current.x * 20, current.y * 20, 20, 20); // Visualize
+        while (queue.length > 0) {
+            let current = queue.shift();
+            this.path.push(current);
 
-        if (targets.some(target => target.x === current.x && target.y === current.y)) {
-            return true; // Found one of the targets
-        }
+            if (this.targets.includes(current)) {
+                this.targets.splice(this.targets.indexOf(current), 1); // Remove the target once found
+                this.stepCounter++;
+                this.updateStepCounter(); // Update step counter
+            }
 
-        for (let [dx, dy] of [[0, 1], [1, 0], [0, -1], [-1, 0]]) {
-            let neighbor = { x: current.x + dx, y: current.y + dy };
-            if (isValid(neighbor, visited)) {
-                queue.push(neighbor);
-                visited.add(neighbor.x + ',' + neighbor.y);
+            const neighbors = this.getNeighbors(current);
+            for (const neighbor of neighbors) {
+                if (!this.visited.includes(neighbor) && this.isWalkable(neighbor)) {
+                    queue.push(neighbor);
+                    this.visited.push(neighbor);
+                }
             }
         }
     }
-    return false; // No targets found
+
+    // Get valid neighboring positions
+    getNeighbors(position) {
+        const [x, y] = position;
+        const neighbors = [];
+
+        // 4-directional movement
+        const directions = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+
+        for (const [dx, dy] of directions) {
+            const newX = x + dx;
+            const newY = y + dy;
+            if (this.isValidPosition(newX, newY)) {
+                neighbors.push([newX, newY]);
+            }
+        }
+        return neighbors;
+    }
+
+    // Check boundaries and walkable cells
+    isValidPosition(x, y) {
+        return (x >= 0 && y >= 0 && x < this.grid.length && y < this.grid[0].length);
+    }
+
+    // Check if the cell can be walked on
+    isWalkable(position) {
+        return this.grid[position[0]][position[1]] === 0; // 0 indicates walkable, 1 indicates obstacle
+    }
+
+    // Get the starting position (hardcoded as [0, 0] for simplicity)
+    getStartPosition() {
+        return [0, 0]; // Adjust this based on your needs
+    }
+
+    // Update step counter function
+    updateStepCounter() {
+        document.getElementById('step-counter').innerText = `Step ${this.stepCounter}/${this.path.length}`;
+    }
+
+    // Replay functionality
+    replay() {
+        this.resetPathfinding();
+        this.findPaths(); // Restart the algorithm
+    }
 }
 
-// Validate cell
-function isValid(cell, visited) {
-    return cell.x >= 0 && cell.y >= 0 && cell.x < grid.length && cell.y < grid[0].length && !visited.has(cell.x + ',' + cell.y);
-}
+// Create a new BFS instance and initialize the pathfinding
+const grid = [[0, 0, 1], [0, 1, 0], [0, 0, 0]]; // Example grid
+const targets = [[2, 2], [1, 0]]; // Example targets
+const bfs = new BFS(grid, targets);
+bfs.findPaths();
 
-// Step Counter
-function displaySteps() {
-    ctx.fillStyle = 'white';
-    ctx.font = '20px Arial';
-    ctx.fillText(`Steps: ${steps}`, 10, 20);
-}
-
-// Replay functionality
-function replay() {
-    steps = 0;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    initGrid(20, 20);
-    bfs(start, targets);
-    displaySteps();
-}
-
-// Start the script
-initGrid(20, 20);
-bfs(start, targets);
-displaySteps();
+// Visualization logic (to be implemented separately)
+// function drawGrid() {} // Placeholder for grid drawing
+// function animatePath() {} // Placeholder for path animation.
